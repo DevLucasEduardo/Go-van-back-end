@@ -50,4 +50,3 @@ public class Card {
     private Boolean accessibility;
 }
 
-

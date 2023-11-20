@@ -26,17 +26,6 @@ public class CardController {
         // Retorna uma lista de cartões mapeados para objetos CardDTO e envia como resposta HTTP 200 (OK).
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getCardById(@PathVariable Long id) {
-        // Método que lida com solicitações GET para obter um cartão com um ID específico.
-        Card cardValidation = cardRepository.findById(id).orElse(null);
-        if (cardValidation == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found!");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(new CardDTO(cardValidation));
-        // Retorna o cartão encontrado com o ID especificado ou uma mensagem "Not found!" com a resposta HTTP apropriada.
-    }
-
     @PostMapping("/")
     public ResponseEntity<CardDTO> postCard(@RequestBody Card card) {
         // Método que lida com solicitações POST para criar um novo cartão.
@@ -44,24 +33,6 @@ public class CardController {
         // Cria um novo cartão, salva no repositório e retorna o cartão criado com a resposta HTTP 201 (Created).
     }
 
-    @PutMapping("/")
-    public ResponseEntity<CardDTO> putCard(@RequestBody Card card) {
-        // Método que lida com solicitações PUT para atualizar um cartão existente.
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new CardDTO(cardRepository.save(card)));
-        // Atualiza o cartão no repositório e retorna o cartão atualizado com a resposta HTTP 202 (Accepted).
-    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCard(@PathVariable Long id) {
-        // Método que lida com solicitações DELETE para excluir um cartão com um ID específico.
-        Card cardValidation = cardRepository.findById(id).orElse(null);
-        if (cardValidation == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found!");
-        }
-        cardRepository.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Deleted!");
-        // Exclui o cartão com o ID especificado e retorna uma mensagem "Deleted!" com a resposta HTTP apropriada.
-    }
 }
-
 

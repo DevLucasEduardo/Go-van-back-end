@@ -41,8 +41,8 @@ public class Login {
     private String password;
 
     /**
-     * O nome da empresa do usuário.
+     * O nome do usuário.
      */
-    @Column(name = "company_name", length = 100, nullable = false)
-    private String company;
+    @Column(name = "user_name", length = 100, nullable = false)
+    private String userName;
 }

@@ -1,8 +1,12 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Login;
 import com.example.demo.model.LoginDTO;
+import com.example.demo.repository.LoginRepository;
 import com.example.demo.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -18,6 +22,9 @@ public class LoginController {
 
     @Autowired
     LoginService loginService;
+    @Autowired
+    LoginRepository loginRepository;
+
 
     /**
      * Manipula uma solicitação POST para autenticação de login de usuário.
@@ -26,11 +33,13 @@ public class LoginController {
      * @return Uma resposta indicando se o login foi bem-sucedido ou falhou.
      */
     @PostMapping("/")
-    public String login(@RequestBody LoginDTO request) {
+    public ResponseEntity<Object> login(@RequestBody LoginDTO request) {
         if (loginService.isUserValid(request.email(), request.password())) {
-            return "Successfully logged";
+            Login loginInfo = loginRepository.findByEmail(request.email());
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new LoginDTO(loginInfo));
         } else {
-            return "Login failed";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found!");
         }
     }
 }
