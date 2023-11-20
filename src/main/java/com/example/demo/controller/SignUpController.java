@@ -15,18 +15,19 @@ public class SignUpController {
     @Autowired
     LoginRepository loginRepository;
 
-    // Endpoint to handle user registration
+    // Endpoint para lidar com o registro do usuário
     @PostMapping("/")
     public ResponseEntity<Object> postUser(@RequestBody Login login) {
-        // Check if the email already exists in the database
+        // Verifica se o e-mail já existe no banco de dados
         Login emailValidation = loginRepository.findByEmail(login.getEmail());
 
-        // If email exists, return CONFLICT status with a message
+        // Se o e-mail existir, retorna o status CONFLICT com uma mensagem
         if (emailValidation != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("E-mail already registered!");
         }
 
-        // If email doesn't exist, save the new user and return CREATED status with the saved user details
+        // Se o e-mail não existir, salva o novo usuário e retorna o status CREATED com os detalhes do usuário salvo
+
         Login savedLogin = loginRepository.save(login);
         return ResponseEntity.status(HttpStatus.CREATED).body(new LoginDTO(savedLogin));
     }
